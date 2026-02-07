@@ -205,5 +205,3 @@ html_code = """
 """
 
 components.html(html_code, height=900, scrolling=False)
-
-st.markdown("Pronto! Copia este código inteiro, substitui o teu ficheiro no GitHub (commit), faz reboot no Streamlit Cloud e testa o link. Agora: coração central grande feito de pequenos corações (sem estrela), corações piscando espalhados pela tela toda, borda rosa em cima, estrelas no fundo e texto no meio. Deve ficar idêntico à imagem! 💖 Se precisar de mais corações piscando ou ajuste na velocidade, diz que mudo na hora.")
