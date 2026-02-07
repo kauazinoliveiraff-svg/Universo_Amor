@@ -183,4 +183,5 @@ html_code = """
 
 components.html(html_code, height=900, scrolling=False)
 
-st.markdown("Copia o link dessa página e manda pra Nastya! Funciona direto no browser do telemóvel dela ❤️")
+
+
