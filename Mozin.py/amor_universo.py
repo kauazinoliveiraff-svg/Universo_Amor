@@ -24,11 +24,10 @@ html_code = """
     padding: 0;
     height: 100%;
     overflow: hidden;
-    background: #0a0015;
-    font-family: Arial, sans-serif;
+    background: radial-gradient(ellipse at bottom, #0a0015 0%, #000 100%);
   }
 
-  /* Estrelas de fundo */
+  /* Estrelas no fundo */
   #stars {
     position: absolute;
     inset: 0;
@@ -39,7 +38,7 @@ html_code = """
     background: #fff;
     border-radius: 50%;
     opacity: 0.6;
-    animation: twinkle 8s infinite alternate;
+    animation: twinkle 10s infinite alternate;
   }
   @keyframes twinkle {
     0%, 100% { opacity: 0.3; }
@@ -58,37 +57,36 @@ html_code = """
     z-index: 5;
   }
 
-  /* Corações espalhados pela tela (aparecem e desaparecem) */
-  .floating-heart {
+  /* Corações piscando/espalhados pela tela toda */
+  .sparkle-heart {
     position: absolute;
-    width: 16px;
-    height: 16px;
+    width: 14px;
+    height: 14px;
     background: #ff69b4;
     transform: rotate(-45deg);
-    box-shadow: 0 0 18px #ff1493;
+    box-shadow: 0 0 15px #ff1493;
     opacity: 0;
-    animation: floatAndFade 12s infinite ease-in-out;
+    animation: sparkle 8s infinite ease-in-out;
   }
-  .floating-heart::before,
-  .floating-heart::after {
+  .sparkle-heart::before,
+  .sparkle-heart::after {
     content: "";
     position: absolute;
-    width: 16px;
-    height: 16px;
+    width: 14px;
+    height: 14px;
     background: #ff69b4;
     border-radius: 50%;
   }
-  .floating-heart::before { top: -8px; left: 0; }
-  .floating-heart::after { left: 8px; top: 0; }
+  .sparkle-heart::before { top: -7px; left: 0; }
+  .sparkle-heart::after { left: 7px; top: 0; }
 
-  @keyframes floatAndFade {
-    0%   { opacity: 0; transform: translateY(100vh) rotate(-45deg) scale(0.6); }
-    10%  { opacity: 0.9; }
-    90%  { opacity: 0.9; }
-    100% { opacity: 0; transform: translateY(-20vh) rotate(-45deg) scale(1.2); }
+  @keyframes sparkle {
+    0%, 100% { opacity: 0; transform: scale(0.5) rotate(-45deg); }
+    20%, 80% { opacity: 1; transform: scale(1.1) rotate(-45deg); }
+    50% { opacity: 0.9; transform: scale(1.3) rotate(-45deg); }
   }
 
-  /* Coração grande central feito de pequenos corações */
+  /* Coração grande central feito de pequenos corações (fixo e pulsante) */
   .big-heart {
     position: absolute;
     top: 50%;
@@ -123,7 +121,7 @@ html_code = """
     50% { transform: rotate(-45deg) scale(1.3); opacity: 1; }
   }
 
-  /* Texto centralizado */
+  /* Texto centralizado abaixo do coração */
   .message {
     position: absolute;
     top: 65%;
@@ -132,7 +130,7 @@ html_code = """
     font-size: 4.5em;
     color: #ff69b4;
     text-shadow: 0 0 45px #ff1493, 0 0 90px #ff69b4;
-    animation: glow 4s infinite alternate;
+    animation: glow 4.5s infinite alternate;
     z-index: 15;
     white-space: nowrap;
     pointer-events: none;
@@ -152,46 +150,48 @@ html_code = """
   <script>
     // Estrelas
     const stars = document.getElementById('stars');
-    for (let i = 0; i < 180; i++) {
+    for (let i = 0; i < 220; i++) {
       const s = document.createElement('div');
       s.className = 'star';
       s.style.width = s.style.height = (Math.random() * 3 + 1) + 'px';
       s.style.top = Math.random() * 100 + '%';
       s.style.left = Math.random() * 100 + '%';
-      s.style.animationDelay = Math.random() * 8 + 's';
+      s.style.animationDelay = Math.random() * 10 + 's';
       stars.appendChild(s);
     }
 
     // Coraçõezinhos na borda rosa de cima
     const top = document.getElementById('topBorder');
-    for (let i = 0; i < 120; i++) {
+    for (let i = 0; i < 130; i++) {
       const h = document.createElement('div');
-      h.className = 'top-heart';
+      h.className = 'sparkle-heart';
       h.style.left = Math.random() * 100 + '%';
-      h.style.top = Math.random() * 80 + 'px';
+      h.style.top = Math.random() * 100 + 'px';
+      h.style.animationDelay = Math.random() * 6 + 's';
       top.appendChild(h);
     }
 
-    // Corações espalhados pela tela (aparecem e somem)
-    function createFloatingHeart() {
+    // Corações piscando espalhados pela tela toda
+    function createSparkle() {
       const h = document.createElement('div');
-      h.className = 'floating-heart';
+      h.className = 'sparkle-heart';
       h.style.left = Math.random() * 100 + 'vw';
       h.style.top = Math.random() * 100 + 'vh';
+      h.style.animationDuration = (Math.random() * 5 + 8) + 's';
       h.style.animationDelay = Math.random() * 8 + 's';
       document.body.appendChild(h);
-      setTimeout(() => h.remove(), 15000);
+      setTimeout(() => h.remove(), 20000);
     }
-    setInterval(createFloatingHeart, 400); // Aparecem e somem suavemente
+    setInterval(createSparkle, 600); // Piscam suavemente pela tela
 
-    // Coração grande central (sem estrela)
+    // Coração grande central (feito de pequenos corações)
     const heartContainer = document.getElementById('bigHeart');
-    const num = 100;
+    const num = 110;
     for (let i = 0; i < num; i++) {
       const angle = (i / num) * Math.PI * 2;
-      const r = 0.8 + 0.28 * Math.sin(angle * 5) + 0.12 * Math.sin(angle * 10);
+      const r = 0.85 + 0.25 * Math.sin(angle * 5) + 0.1 * Math.sin(angle * 10);
       const x = Math.cos(angle) * r * 140;
-      const y = Math.sin(angle) * r * 120 - 60;
+      const y = Math.sin(angle) * r * 130 - 65;
       const sh = document.createElement('div');
       sh.className = 'small-heart';
       sh.style.left = (x + 190 - 5) + 'px';
@@ -206,4 +206,4 @@ html_code = """
 
 components.html(html_code, height=900, scrolling=False)
 
-st.markdown("Pronto! Copia este código inteiro, substitui o teu ficheiro no GitHub, faz commit e reboot no Streamlit. Deve ficar exatamente como na imagem: corações espalhados pela tela que aparecem e somem, borda rosa em cima, coração grande central atrás do texto, sem estrela. Se ainda não ficar certo, diz o que falta que ajustamos mais! 💖")
+st.markdown("Pronto! Copia este código inteiro, substitui o teu ficheiro no GitHub (commit), faz reboot no Streamlit Cloud e testa o link. Agora: coração central grande feito de pequenos corações (sem estrela), corações piscando espalhados pela tela toda, borda rosa em cima, estrelas no fundo e texto no meio. Deve ficar idêntico à imagem! 💖 Se precisar de mais corações piscando ou ajuste na velocidade, diz que mudo na hora.")
